@@ -1,13 +1,9 @@
 
-const CACHE_NAME = 'parkiq-core-v8';
+const CACHE_NAME = 'parkiq-v9-stable';
 const OFFLINE_ASSETS = [
   '/',
   '/index.html',
-  '/index.tsx',
-  '/App.tsx',
-  '/types.ts',
   '/manifest.json',
-  '/components/MapView.tsx',
   'https://cdn.tailwindcss.com',
   'https://unpkg.com/leaflet@1.9.4/dist/leaflet.css',
   'https://unpkg.com/leaflet@1.9.4/dist/leaflet.js',
@@ -18,7 +14,6 @@ const OFFLINE_ASSETS = [
 self.addEventListener('install', (event) => {
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => {
-      // Use individual add to ensure the cache is as full as possible even if one link breaks
       return Promise.allSettled(
         OFFLINE_ASSETS.map(asset => cache.add(asset))
       );
@@ -38,30 +33,33 @@ self.addEventListener('activate', (event) => {
 });
 
 self.addEventListener('fetch', (event) => {
-  const url = event.request.url;
+  const url = new URL(event.request.url);
   
-  // Cache-First for core assets and common CDNs
+  // For .tsx and .ts files, always try network first to avoid the "Unexpected token <" caching issue
+  if (url.pathname.endsWith('.tsx') || url.pathname.endsWith('.ts')) {
+    event.respondWith(
+      fetch(event.request).catch(() => caches.match(event.request))
+    );
+    return;
+  }
+
+  // For core assets and CDNs, use cache-first
   if (
-    OFFLINE_ASSETS.some(asset => url.includes(asset)) || 
-    url.includes('esm.sh') || 
-    url.includes('unpkg.com') ||
-    url.includes('openstreetmap.org')
+    OFFLINE_ASSETS.some(asset => event.request.url.includes(asset)) || 
+    event.request.url.includes('esm.sh') || 
+    event.request.url.includes('unpkg.com')
   ) {
     event.respondWith(
       caches.match(event.request).then((cached) => {
         return cached || fetch(event.request).then((networkResponse) => {
           if (!networkResponse || networkResponse.status !== 200) return networkResponse;
-          return caches.open(CACHE_NAME).then((cache) => {
-            cache.put(event.request, networkResponse.clone());
-            return networkResponse;
-          });
-        }).catch(() => null);
+          const clone = networkResponse.clone();
+          caches.open(CACHE_NAME).then((cache) => cache.put(event.request, clone));
+          return networkResponse;
+        });
       })
     );
   } else {
-    // Network-First for everything else
-    event.respondWith(
-      fetch(event.request).catch(() => caches.match(event.request))
-    );
+    event.respondWith(fetch(event.request).catch(() => caches.match(event.request)));
   }
 });
