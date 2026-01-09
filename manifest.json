@@ -9,7 +9,7 @@
   "theme_color": "#4f46e5",
   "icons": [
     {
-      "src": "https://cdn-icons-png.flaticon.com/512/2990/2990801.png",
+      "src": "https://raw.githubusercontent.com/google/material-design-icons/master/png/maps/local_parking/materialicons/512dp/2x/baseline_local_parking_black_48dp.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any maskable"

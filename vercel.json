@@ -5,6 +5,15 @@
   "outputDirectory": ".",
   "headers": [
     {
+      "source": "/(.*)\\.(ts|tsx)",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "application/javascript"
+        }
+      ]
+    },
+    {
       "source": "/sw.js",
       "headers": [
         {
