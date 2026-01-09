@@ -1,0 +1,18 @@
+
+{
+  "name": "ParkIQ Parking Utility",
+  "short_name": "ParkIQ",
+  "description": "Offline-first parking assistant to save your spot and track timers.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#1e293b",
+  "theme_color": "#4f46e5",
+  "icons": [
+    {
+      "src": "https://cdn-icons-png.flaticon.com/512/2990/2990801.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

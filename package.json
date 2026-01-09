@@ -1,0 +1,13 @@
+
+{
+  "name": "parkiq-widget",
+  "version": "1.2.0",
+  "description": "Smart parking assistant PWA",
+  "scripts": {
+    "start": "npx serve .",
+    "build": "echo 'No build step required for ESM-based app'"
+  },
+  "dependencies": {
+    "serve": "^14.2.0"
+  }
+}
