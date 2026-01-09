@@ -1,23 +1,24 @@
 
-const CACHE_NAME = 'parkiq-core-v7';
+const CACHE_NAME = 'parkiq-core-v8';
 const OFFLINE_ASSETS = [
   '/',
   '/index.html',
   '/index.tsx',
-  '/types.ts',
   '/App.tsx',
+  '/types.ts',
   '/manifest.json',
   '/components/MapView.tsx',
   'https://cdn.tailwindcss.com',
   'https://unpkg.com/leaflet@1.9.4/dist/leaflet.css',
   'https://unpkg.com/leaflet@1.9.4/dist/leaflet.js',
-  'https://raw.githubusercontent.com/google/material-design-icons/master/png/maps/local_parking/materialicons/512dp/2x/baseline_local_parking_black_48dp.png'
+  'https://unpkg.com/@babel/standalone/babel.min.js',
+  'https://upload.wikimedia.org/wikipedia/commons/thumb/6/67/Parking_icon.svg/512px-Parking_icon.svg.png'
 ];
 
 self.addEventListener('install', (event) => {
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => {
-      // Use individual add for each asset to avoid complete failure if one 404s
+      // Use individual add to ensure the cache is as full as possible even if one link breaks
       return Promise.allSettled(
         OFFLINE_ASSETS.map(asset => cache.add(asset))
       );
@@ -39,9 +40,11 @@ self.addEventListener('activate', (event) => {
 self.addEventListener('fetch', (event) => {
   const url = event.request.url;
   
+  // Cache-First for core assets and common CDNs
   if (
     OFFLINE_ASSETS.some(asset => url.includes(asset)) || 
     url.includes('esm.sh') || 
+    url.includes('unpkg.com') ||
     url.includes('openstreetmap.org')
   ) {
     event.respondWith(
@@ -56,6 +59,7 @@ self.addEventListener('fetch', (event) => {
       })
     );
   } else {
+    // Network-First for everything else
     event.respondWith(
       fetch(event.request).catch(() => caches.match(event.request))
     );

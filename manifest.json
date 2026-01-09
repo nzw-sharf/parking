@@ -9,7 +9,7 @@
   "theme_color": "#4f46e5",
   "icons": [
     {
-      "src": "https://raw.githubusercontent.com/google/material-design-icons/master/png/maps/local_parking/materialicons/512dp/2x/baseline_local_parking_black_48dp.png",
+      "src": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/67/Parking_icon.svg/512px-Parking_icon.svg.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any maskable"
