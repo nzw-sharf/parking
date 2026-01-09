@@ -1,9 +1,13 @@
 
-const CACHE_NAME = 'parkiq-core-v5';
+const CACHE_NAME = 'parkiq-core-v6';
 const OFFLINE_ASSETS = [
   '/',
   '/index.html',
+  '/index.tsx',
+  '/types.ts',
+  '/App.tsx',
   '/manifest.json',
+  '/components/MapView.tsx',
   'https://cdn.tailwindcss.com',
   'https://unpkg.com/leaflet@1.9.4/dist/leaflet.css',
   'https://unpkg.com/leaflet@1.9.4/dist/leaflet.js',
@@ -30,7 +34,7 @@ self.addEventListener('activate', (event) => {
 self.addEventListener('fetch', (event) => {
   const url = event.request.url;
   
-  // Cache-First strategy for static assets and ESM modules
+  // Cache-First strategy for modules and assets
   if (
     OFFLINE_ASSETS.some(asset => url.includes(asset)) || 
     url.includes('esm.sh') || 
@@ -47,7 +51,7 @@ self.addEventListener('fetch', (event) => {
       })
     );
   } else {
-    // Network-First for everything else
+    // Network-First for other requests
     event.respondWith(
       fetch(event.request).catch(() => caches.match(event.request))
     );

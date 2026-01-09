@@ -1,5 +1,5 @@
 {
-  "name": "Copy of ParkIQ Widget",
+  "name": "ParkIQ Widget",
   "description": "A high-performance, offline-first parking utility. Save locations, photos, and timers locally on your device without needing internet.",
   "requestFramePermissions": [
     "camera",

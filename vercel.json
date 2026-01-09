@@ -2,6 +2,7 @@
 {
   "cleanUrls": true,
   "framework": null,
+  "outputDirectory": ".",
   "headers": [
     {
       "source": "/sw.js",
