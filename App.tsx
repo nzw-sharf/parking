@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect, useRef } from 'react';
-import { ParkingState, ParkingLocation } from './types';
-import MapView from './components/MapView';
+import { ParkingState, ParkingLocation } from './types.ts';
+import MapView from './components/MapView.tsx';
 import { MapPin, Camera, Clock, History, X, Trash2, Navigation, Info, Loader2, Hash, WifiOff, Database, Map as MapIcon, Edit3 } from 'lucide-react';
 
 const DB_NAME = 'ParkIQ_DB';

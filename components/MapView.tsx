@@ -1,6 +1,6 @@
 
 import React, { useEffect, useRef } from 'react';
-import { ParkingLocation } from '../types';
+import { ParkingLocation } from '../types.ts';
 
 interface MapViewProps {
   currentLocation: { lat: number, lng: number } | null;
